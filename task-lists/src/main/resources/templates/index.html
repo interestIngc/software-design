@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>Task lists</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<table>
+    <th:block th:each="taskList : ${taskLists}">
+        <tr>
+            <td>
+                <a th:href="@{/tasks/{taskListId}(taskListId=${taskList.getId()})}"
+                   th:text="${taskList.getName()}"
+                   style="font-size:18px">
+                </a>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/task-lists/delete(taskListId=${taskList.getId()})}">
+                    <input type="submit" class="material-icons" style="color:red" value="delete">
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+<h3>Add new task list</h3>
+<form th:object="${taskList}" method="POST" action="/task-lists/add">
+    <table>
+        <tr>
+            <td><label>Name:</label></td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+    </table>
+
+    <input type="submit" value="add">
+</form>
+
+</body>
+</html>

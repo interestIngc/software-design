@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>Tasks in list</title>
+</head>
+<body>
+
+<a th:href="@{/task-lists/preview}">
+    <input type="button" value="HOME">
+</a>
+
+<table>
+    <tr>
+        <th colspan="2">Task:</th>
+        <th colspan="1">Due date:</th>
+        <th colspan="1">Status:</th>
+    </tr>
+    <th:block th:each="task : ${tasks}" th:colspan="4">
+        <tr>
+            <td>
+                <form method="POST"
+                      th:action="@{/tasks/{taskListId}/complete(taskListId=${taskListId}, taskId=${task.getId()})}">
+                    <input type="submit" style="border-radius: 50px;border: 2px solid #73AD21;width: 20px" value="">
+                </form>
+            </td>
+            <td th:text="${task.getName()}"></td>
+            <td th:text="${task.getDate()}"></td>
+            <td>
+                <span th:if="${task.isCompleted()}"><i style="color: green">completed</i></span>
+                <span th:unless="${task.isCompleted()}"><i style="color: blue">assigned</i></span>
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+<h3>Add new task</h3>
+<form th:object="${task}" method="POST" th:action="@{/tasks/{taskListId}/add(taskListId=${taskListId})}">
+    <table>
+        <tr>
+            <td><label>Name:</label></td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+        <tr>
+            <td><label>Due date:</label></td>
+            <td><input type="text" th:field="*{date}"/></td>
+        </tr>
+    </table>
+
+    <input type="submit" value="add">
+</form>
+
+</body>
+</html>
